@@ -52,22 +52,22 @@ namespace mvHub
             public HttpCredentials(string authMethod, string username, string password, string sessionId, int timeoutMinutes = 1, Dictionary<string, HttpCredentials> cacheDictionary = null)
             {
                 if (authMethod == null) authMethod = "Basic";
-                this.AuthMethod = authMethod;
+                AuthMethod = authMethod;
 
                 if (username == null) username = "";
-                this.Username = username;
-                if (this.Username == string.Empty)
+                Username = username;
+                if (Username == string.Empty)
                 {
-                    this.Username = null;
+                    Username = null;
                 }
-                this.Password = password;
-                if (this.Password == string.Empty)
+                Password = password;
+                if (Password == string.Empty)
                 {
-                    this.Password = null;
+                    Password = null;
                 }
 
-                this.SessionId = sessionId;
-                this.TimeoutMinutes = timeoutMinutes;
+                SessionId = sessionId;
+                TimeoutMinutes = timeoutMinutes;
                 ParentCache = cacheDictionary;
                 Expired = false;
 

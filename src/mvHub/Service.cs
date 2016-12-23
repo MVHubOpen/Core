@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Web;
 using System.Web.Configuration;
@@ -14,31 +13,29 @@ namespace mvHub
     public class Service : IHttpHandler
     {
         static readonly string MvHubPath;
-        static readonly string MvHubDataConnectorAssembly;
-        static readonly string MvHubDataConnectorClass;
         static readonly ImvDataConnector DataConnector;
 
         static Service()
         {
             MvHubPath = WebConfigurationManager.AppSettings["mvHubPath"];
             if (MvHubPath.Length < 1) MvHubPath = "Service";
-            MvHubDataConnectorAssembly = WebConfigurationManager.AppSettings["mvHubDataConnectorAssembly"];
-            if (string.IsNullOrEmpty(MvHubDataConnectorAssembly))
+            var mvHubDataConnectorAssembly = WebConfigurationManager.AppSettings["mvHubDataConnectorAssembly"];
+            if (string.IsNullOrEmpty(mvHubDataConnectorAssembly))
             {
                 throw new MvHubDataConnectorException("mvHub Data Connector Assembly Not Defined");
             }
-            MvHubDataConnectorAssembly = Path.Combine(HttpRuntime.AppDomainAppPath,
-                       "bin\\" + MvHubDataConnectorAssembly);
-            var assembly = Assembly.LoadFrom(MvHubDataConnectorAssembly);
+            mvHubDataConnectorAssembly = Path.Combine(HttpRuntime.AppDomainAppPath,
+                       "bin\\" + mvHubDataConnectorAssembly);
+            var assembly = Assembly.LoadFrom(mvHubDataConnectorAssembly);
 
-            MvHubDataConnectorClass = WebConfigurationManager.AppSettings["mvHubDataConnectorClass"];
-            if (string.IsNullOrEmpty(MvHubDataConnectorClass))
+            var mvHubDataConnectorClass = WebConfigurationManager.AppSettings["mvHubDataConnectorClass"];
+            if (string.IsNullOrEmpty(mvHubDataConnectorClass))
             {
                 throw new MvHubDataConnectorException("mvHub Data Connector Class Not Defined");
             }
             try
             {
-                var type = assembly.GetType(MvHubDataConnectorClass);
+                var type = assembly.GetType(mvHubDataConnectorClass);
                 DataConnector = Activator.CreateInstance(type) as ImvDataConnector;
                 if (DataConnector == null)
                 {
@@ -55,7 +52,7 @@ namespace mvHub
         public void ProcessRequest(HttpContext context)
         {
 
-            byte[] msg = null;
+            byte[] msg;
            
             try
             {
@@ -71,7 +68,7 @@ namespace mvHub
 
                 var session = DataConnector.GetSession(hubRoutine);
                 session.RequestHeader = requestHeader.ToString();
-                session.RequestBody = ParseBody(context, requestHeader).ToString();
+                session.RequestBody = ParseBody(context, requestHeader);
                 session.Call();
                 session.Close();
                 
@@ -164,7 +161,7 @@ namespace mvHub
 
             if (!context.Request.RawUrl.Contains("?")) return reqHeader;
             var bufferarray =
-                context.Request.RawUrl.Substring(context.Request.RawUrl.IndexOf("?") + 1)
+                context.Request.RawUrl.Substring(context.Request.RawUrl.IndexOf("?", StringComparison.Ordinal) + 1)
                     .Split('&');
 
             var pos = 0;

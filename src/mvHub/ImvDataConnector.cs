@@ -86,7 +86,7 @@ namespace mvHub
         /// </summary>
         public HandlerConfiguration(ImvDataConnector dataConnector)
         {
-            this.DataConnector = dataConnector;
+            DataConnector = dataConnector;
             ReloadConfiguration();
         }
 

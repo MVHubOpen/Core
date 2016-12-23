@@ -4,7 +4,7 @@ namespace mvHub
 {
     public abstract class ImvException : Exception
     {
-        private readonly string _message;
+        public override string Message { get; }
 
         protected ImvException()
         { Init(); }
@@ -13,7 +13,7 @@ namespace mvHub
             : base(message)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
-            _message = message;
+            Message = message;
             Init();
         }
 
@@ -31,13 +31,14 @@ namespace mvHub
     [Serializable]
     public class DelimitSetException : ImvException
     {
-        private readonly string _message;
+        public override string Message { get; }
+
         public DelimitSetException()
         { }
         public DelimitSetException(string message)
             : base(message)
         {
-            _message = message;
+            Message = message;
         }
 
         public DelimitSetException(string message, Exception interException) : base(message, interException) { }
@@ -49,7 +50,7 @@ namespace mvHub
         public ConnectionFailedException(string message, string connectionString)
             : base(message)
         {
-            this.ConnectionString = connectionString;
+            ConnectionString = connectionString;
         }
 
         public string ConnectionString { get; private set; }
@@ -59,14 +60,15 @@ namespace mvHub
     [Serializable]
     public class SubroutineException : Exception
     {
-        private readonly string _message;
+        public override string Message { get; }
+
         public SubroutineException()
         { }
         public SubroutineException(string message)
             : base(message)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
-            _message = message;
+            Message = message;
         }
 
         public SubroutineException(string message, Exception interException) : base(message, interException) { }
@@ -75,7 +77,8 @@ namespace mvHub
     [Serializable]
     public class HeaderParseException : ImvException
     {
-        private readonly string _message;
+        public override string Message { get; }
+
         public HeaderParseException()
         { }
 
@@ -83,48 +86,50 @@ namespace mvHub
         public HeaderParseException(string message, Exception interException)
             : base(message, interException)
         {
-            _message = message;
+            Message = message;
         }
     }
 
     [Serializable]
     public class SessionException : ImvException
     {
-        private readonly string _message;
+        public override string Message { get; }
+
         public SessionException()
         { }
         public SessionException(string message)
             : base(message)
         {
-            _message = message;
+            Message = message;
         }
 
         public SessionException(string message, Exception interException)
             : base(message, interException)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
-            _message = message;
+            Message = message;
         }
     }
 
     [Serializable]
     public class RecordException : ImvException
     {
-        private readonly string _message;
+        public override string Message { get; }
+
         public RecordException()
         { }
         public RecordException(string message)
             : base(message)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
-            _message = message;
+            Message = message;
         }
 
         public RecordException(string message, Exception interException)
             : base(message, interException)
         {
             if (message == null) throw new ArgumentNullException(nameof(message));
-            _message = message;
+            Message = message;
         }
     }
 
