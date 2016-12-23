@@ -4,10 +4,10 @@ namespace mvHub
 {
     public abstract class ImvException : Exception
     {
-        public override string Message { get; }
-
         protected ImvException()
-        { Init(); }
+        {
+            Init();
+        }
 
         protected ImvException(string message)
             : base(message)
@@ -17,10 +17,16 @@ namespace mvHub
             Init();
         }
 
-        protected ImvException(string message, Exception interException) : base(message, interException) { Init(); }
+        protected ImvException(string message, Exception interException) : base(message, interException)
+        {
+            Init();
+        }
+
+        public override string Message { get; }
 
         public int SuggestedHttpCode { get; set; }
         protected string Comment { get; set; }
+
         private void Init()
         {
             SuggestedHttpCode = 500;
@@ -31,17 +37,21 @@ namespace mvHub
     [Serializable]
     public class DelimitSetException : ImvException
     {
-        public override string Message { get; }
-
         public DelimitSetException()
-        { }
+        {
+        }
+
         public DelimitSetException(string message)
             : base(message)
         {
             Message = message;
         }
 
-        public DelimitSetException(string message, Exception interException) : base(message, interException) { }
+        public DelimitSetException(string message, Exception interException) : base(message, interException)
+        {
+        }
+
+        public override string Message { get; }
     }
 
     [Serializable]
@@ -54,16 +64,15 @@ namespace mvHub
         }
 
         public string ConnectionString { get; private set; }
-
     }
 
     [Serializable]
     public class SubroutineException : Exception
     {
-        public override string Message { get; }
-
         public SubroutineException()
-        { }
+        {
+        }
+
         public SubroutineException(string message)
             : base(message)
         {
@@ -71,32 +80,40 @@ namespace mvHub
             Message = message;
         }
 
-        public SubroutineException(string message, Exception interException) : base(message, interException) { }
+        public SubroutineException(string message, Exception interException) : base(message, interException)
+        {
+        }
+
+        public override string Message { get; }
     }
 
     [Serializable]
     public class HeaderParseException : ImvException
     {
-        public override string Message { get; }
-
         public HeaderParseException()
-        { }
+        {
+        }
 
-        public HeaderParseException(string message) : base(message) { }
+        public HeaderParseException(string message) : base(message)
+        {
+        }
+
         public HeaderParseException(string message, Exception interException)
             : base(message, interException)
         {
             Message = message;
         }
+
+        public override string Message { get; }
     }
 
     [Serializable]
     public class SessionException : ImvException
     {
-        public override string Message { get; }
-
         public SessionException()
-        { }
+        {
+        }
+
         public SessionException(string message)
             : base(message)
         {
@@ -109,15 +126,17 @@ namespace mvHub
             if (message == null) throw new ArgumentNullException(nameof(message));
             Message = message;
         }
+
+        public override string Message { get; }
     }
 
     [Serializable]
     public class RecordException : ImvException
     {
-        public override string Message { get; }
-
         public RecordException()
-        { }
+        {
+        }
+
         public RecordException(string message)
             : base(message)
         {
@@ -131,6 +150,8 @@ namespace mvHub
             if (message == null) throw new ArgumentNullException(nameof(message));
             Message = message;
         }
+
+        public override string Message { get; }
     }
 
     [Serializable]
@@ -141,12 +162,12 @@ namespace mvHub
         }
 
         public MvHubException(string message)
-        : base(message)
+            : base(message)
         {
         }
 
         public MvHubException(string message, Exception inner)
-        : base(message, inner)
+            : base(message, inner)
         {
         }
     }
@@ -159,12 +180,12 @@ namespace mvHub
         }
 
         public MvHubDataConnectorException(string message)
-        : base(message)
+            : base(message)
         {
         }
 
         public MvHubDataConnectorException(string message, Exception inner)
-        : base(message, inner)
+            : base(message, inner)
         {
         }
     }
@@ -177,12 +198,12 @@ namespace mvHub
         }
 
         public MvHubSubroutineException(string message)
-        : base(message)
+            : base(message)
         {
         }
 
         public MvHubSubroutineException(string message, Exception inner)
-        : base(message, inner)
+            : base(message, inner)
         {
         }
     }

@@ -12,6 +12,7 @@ namespace mvHub
         {
             Configuration = new HandlerConfiguration(this);
         }
+
         #endregion
 
         #region Public Methods
@@ -30,8 +31,8 @@ namespace mvHub
         public string DefaultSubroutine => Configuration.Subroutine;
 
         #endregion
-
     }
+
     public abstract class MvSession : IDisposable
     {
         protected MvSession(ImvDataConnector assignParentConnector,
@@ -65,24 +66,41 @@ namespace mvHub
 
         public ImvDataConnector ParentConnector { get; protected set; }
 
-
-        public abstract void Close();
-        public abstract void Dispose();
-
         protected string Hostname { get; set; }
         protected string Account { get; set; }
         protected string User { get; set; }
         protected string Password { get; set; }
         protected string Subroutine { get; set; }
+        public abstract void Dispose();
+
+
+        public abstract void Close();
         public abstract bool Call();
     }
 
     public class HandlerConfiguration
     {
+        public void ReloadConfiguration()
+        {
+            Account = WebConfigurationManager.AppSettings["DBAccount"];
+            Database = WebConfigurationManager.AppSettings["DBHost"];
+            Password = WebConfigurationManager.AppSettings["DBDefaultPassword"];
+            Username = WebConfigurationManager.AppSettings["DBDefaultUser"];
+            Subroutine = WebConfigurationManager.AppSettings["DBDefaultSubroutine"];
+            AuthPath = WebConfigurationManager.AppSettings["mvHubAuth"];
+            HubPath = WebConfigurationManager.AppSettings["mvHubPath"];
+        }
+
+
+        public static void Log(EventLogEntryType error, int errorNumber, string section, string errorMessage)
+        {
+            Console.WriteLine(error + ":" + errorNumber + "/" + section + ":" + errorMessage);
+        }
+
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the GraphServerConfiguration class.
+        ///     Initializes a new instance of the GraphServerConfiguration class.
         /// </summary>
         public HandlerConfiguration(ImvDataConnector dataConnector)
         {
@@ -100,24 +118,5 @@ namespace mvHub
         public ImvDataConnector DataConnector { get; private set; }
 
         #endregion
-
-        public void ReloadConfiguration()
-        {
-            Account = WebConfigurationManager.AppSettings["DBAccount"];
-            Database = WebConfigurationManager.AppSettings["DBHost"];
-            Password = WebConfigurationManager.AppSettings["DBDefaultPassword"];
-            Username = WebConfigurationManager.AppSettings["DBDefaultUser"];
-            Subroutine = WebConfigurationManager.AppSettings["DBDefaultSubroutine"];
-            AuthPath = WebConfigurationManager.AppSettings["mvHubAuth"];
-            HubPath = WebConfigurationManager.AppSettings["mvHubPath"];
-        }
-
-        
-
-
-        public static void Log(EventLogEntryType error, int errorNumber, string section, string errorMessage)
-        {
-            Console.WriteLine(error + ":" + errorNumber + "/" + section + ":" + errorMessage);
-        }
     }
 }

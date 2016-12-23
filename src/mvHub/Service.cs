@@ -12,8 +12,8 @@ namespace mvHub
 {
     public class Service : IHttpHandler
     {
-        static readonly string MvHubPath;
-        static readonly ImvDataConnector DataConnector;
+        private static readonly string MvHubPath;
+        private static readonly ImvDataConnector DataConnector;
 
         static Service()
         {
@@ -25,7 +25,7 @@ namespace mvHub
                 throw new MvHubDataConnectorException("mvHub Data Connector Assembly Not Defined");
             }
             mvHubDataConnectorAssembly = Path.Combine(HttpRuntime.AppDomainAppPath,
-                       "bin\\" + mvHubDataConnectorAssembly);
+                "bin\\" + mvHubDataConnectorAssembly);
             var assembly = Assembly.LoadFrom(mvHubDataConnectorAssembly);
 
             var mvHubDataConnectorClass = WebConfigurationManager.AppSettings["mvHubDataConnectorClass"];
@@ -46,14 +46,12 @@ namespace mvHub
             {
                 throw new MvHubDataConnectorException("mvHub Unable To Create Connector", ex);
             }
-
         }
 
         public void ProcessRequest(HttpContext context)
         {
-
             byte[] msg;
-           
+
             try
             {
                 var param = Helper.ParseSegments(MvHubPath, context);
@@ -71,9 +69,8 @@ namespace mvHub
                 session.RequestBody = ParseBody(context, requestHeader);
                 session.Call();
                 session.Close();
-                
-                ApplyHeader(context,new Mvdom(session.ReplyHeader));
 
+                ApplyHeader(context, new Mvdom(session.ReplyHeader));
 
 
                 msg = Encoding.UTF8.GetBytes(session.ReplyBody);
@@ -92,17 +89,17 @@ namespace mvHub
                     context.Response.ContentType = "text/plain";
                     context.Response.AddHeader("Cache-Control", "no-cache");
                     msg = Encoding.UTF8.GetBytes(ex.Message + Environment.NewLine
-                        + ex.StackTrace);
+                                                 + ex.StackTrace);
                     context.Response.OutputStream.Write(msg, 0, msg.Length);
                 }
                 catch (Exception)
                 {
                     context.Response.Close();
                 }
-
             }
-
         }
+
+        public bool IsReusable => true;
 
         private static void ApplyHeader(HttpContext context, Mvdom replyHeader)
         {
@@ -111,10 +108,10 @@ namespace mvHub
             var cnt = replyHeader.DCount(5);
             for (var pos = 1; pos <= cnt; pos++)
             {
-                context.Response.AddHeader(replyHeader.Extract(5,pos), replyHeader.Extract(6, pos));
+                context.Response.AddHeader(replyHeader.Extract(5, pos), replyHeader.Extract(6, pos));
             }
-                
         }
+
         private static Mvdom ParseHeader(HttpContext context)
         {
             var reqHeader = new Mvdom();
@@ -158,7 +155,6 @@ namespace mvHub
             reqHeader[14] = context.Request.IsAuthenticated.ToString();
 
 
-
             if (!context.Request.RawUrl.Contains("?")) return reqHeader;
             var bufferarray =
                 context.Request.RawUrl.Substring(context.Request.RawUrl.IndexOf("?", StringComparison.Ordinal) + 1)
@@ -198,6 +194,7 @@ namespace mvHub
 
             return reqHeader;
         }
+
         private static string ParseBody(HttpContext context, DomSupport.MvNode header)
         {
             var requestBody = "";
@@ -214,7 +211,6 @@ namespace mvHub
 
                     switch (contentType)
                     {
-
                         case "text/csv":
                             requestBody = MvCsv.ToMvString(postBuffer);
                             break;
@@ -226,8 +222,6 @@ namespace mvHub
                     break;
             }
             return requestBody;
-
         }
-        public bool IsReusable => true;
     }
 }

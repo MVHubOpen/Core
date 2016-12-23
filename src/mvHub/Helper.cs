@@ -45,7 +45,6 @@ namespace mvHub
 
         public static string[] ParseSegments(string handlerName, HttpContext context)
         {
-
             var parm = new List<string>();
 
             var mode = 0;
@@ -60,7 +59,6 @@ namespace mvHub
                 if (oSeg.EndsWith("/"))
                 {
                     oSeg = oSeg.Substring(0, oSeg.Length - 1);
-
                 }
                 var uSeg = oSeg.ToLower();
 
@@ -76,15 +74,18 @@ namespace mvHub
             }
             return parm.ToArray();
         }
+
         public static string GetPostBuffer(HttpContext context)
         {
             string postBuffer;
             try
             {
-
                 postBuffer = new StreamReader(context.Request.InputStream).ReadToEnd();
             }
-            catch { postBuffer = ""; }
+            catch
+            {
+                postBuffer = "";
+            }
             return postBuffer;
         }
     }

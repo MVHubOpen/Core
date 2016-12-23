@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Timers;
 using System.Web;
-using Timer = System.Timers.Timer;
 
 namespace mvHub
 {
@@ -14,16 +13,17 @@ namespace mvHub
         {
             var authorizationHeader = request.Headers["Authorization"];
             var authMethod = "Basic";
-            if (authorizationHeader == null) return (new HttpCredentials(authMethod, null, null, null));
+            if (authorizationHeader == null) return new HttpCredentials(authMethod, null, null, null);
 
             if (!authorizationHeader.StartsWith("Basic"))
             {
-                if (!authorizationHeader.StartsWith("DBUser")) return (new HttpCredentials(authMethod, null, null, null));
+                if (!authorizationHeader.StartsWith("DBUser")) return new HttpCredentials(authMethod, null, null, null);
                 authMethod = "DBUser";
             }
 
 
-            var encodedUsernamePassword = authorizationHeader.Substring(authorizationHeader.IndexOf(" ", StringComparison.Ordinal)).Trim();
+            var encodedUsernamePassword =
+                authorizationHeader.Substring(authorizationHeader.IndexOf(" ", StringComparison.Ordinal)).Trim();
             var encoding = Encoding.GetEncoding("iso-8859-1");
             var usernamePassword = encoding.GetString(Convert.FromBase64String(encodedUsernamePassword));
 
@@ -39,17 +39,19 @@ namespace mvHub
             {
                 password = null;
             }
-            var sessionId = request.UserHostAddress != null ?
-                Convert.ToBase64String(Encoding.ASCII.GetBytes(request.UserHostAddress)) : "UNKNOWNLOCATION";
+            var sessionId = request.UserHostAddress != null
+                ? Convert.ToBase64String(Encoding.ASCII.GetBytes(request.UserHostAddress))
+                : "UNKNOWNLOCATION";
 
-            return (new HttpCredentials(authMethod, username, password, sessionId));
+            return new HttpCredentials(authMethod, username, password, sessionId);
         }
 
         public class HttpCredentials
         {
             private readonly Timer _timer;
 
-            public HttpCredentials(string authMethod, string username, string password, string sessionId, int timeoutMinutes = 1, Dictionary<string, HttpCredentials> cacheDictionary = null)
+            public HttpCredentials(string authMethod, string username, string password, string sessionId,
+                int timeoutMinutes = 1, Dictionary<string, HttpCredentials> cacheDictionary = null)
             {
                 if (authMethod == null) authMethod = "Basic";
                 AuthMethod = authMethod;
@@ -71,21 +73,27 @@ namespace mvHub
                 ParentCache = cacheDictionary;
                 Expired = false;
 
-                _timer = new Timer(timeoutMinutes * 60 * 1000) { AutoReset = false };
+                _timer = new Timer(timeoutMinutes*60*1000) {AutoReset = false};
                 _timer.Elapsed += OnTimedEvent;
                 _timer.Enabled = true;
                 Expired = false;
-
             }
 
+            public string Username { get; }
+            public string Password { get; }
+            public string SessionId { get; }
+            public string AuthMethod { get; }
+            public bool Expired { get; private set; }
+            public double TimeoutMinutes { get; private set; }
+            public Dictionary<string, HttpCredentials> ParentCache { get; set; }
 
 
             private void RemoveByValue()
             {
                 if (ParentCache == null) return;
                 var itemsToRemove = (from pair in ParentCache
-                                     where pair.Value != null && pair.Value == this
-                                     select pair.Key).ToList();
+                    where pair.Value != null && pair.Value == this
+                    select pair.Key).ToList();
 
                 foreach (var item in itemsToRemove)
                 {
@@ -106,14 +114,6 @@ namespace mvHub
                 _timer.Start();
                 Expired = false;
             }
-
-            public string Username { get; }
-            public string Password { get; }
-            public string SessionId { get; }
-            public string AuthMethod { get; }
-            public bool Expired { get; private set; }
-            public double TimeoutMinutes { get; private set; }
-            public Dictionary<string, HttpCredentials> ParentCache { get; set; }
 
             public string Hashkey(string prefix = "")
             {
