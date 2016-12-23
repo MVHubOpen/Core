@@ -3,31 +3,30 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "TestSite", "TestSite\", "{8F32E552-C036-4CB4-8F1D-FD888D5926E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mvHub", "mvHub\mvHub.csproj", "{B4A594DA-D46B-47D0-9D43-77120D9B55FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniVerseDataConnector", "..\..\U2_Connector\src\UniVerseDataConnector\UniVerseDataConnector.csproj", "{DC27C02B-2065-4189-BBE7-EBDA76D719C2}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "public", "..\..\CoreSite\public\", "{F7CB6C57-D757-40E8-A5A5-B207D36AC870}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_52128"
-		Debug.AspNetCompiler.PhysicalPath = "TestSite\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52128\"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_62557"
+		Debug.AspNetCompiler.PhysicalPath = "..\..\CoreSite\public\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62557\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_52128"
-		Release.AspNetCompiler.PhysicalPath = "TestSite\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52128\"
+		Release.AspNetCompiler.VirtualPath = "/localhost_62557"
+		Release.AspNetCompiler.PhysicalPath = "..\..\CoreSite\public\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_62557\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
 		Release.AspNetCompiler.FixedNames = "false"
 		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "52128"
-		SlnRelativePath = "TestSite\"
-		DefaultWebSiteLanguage = "Visual C#"
+		VWDPort = "62557"
+		SlnRelativePath = "..\..\CoreSite\public\"
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mvHub", "mvHub\mvHub.csproj", "{B4A594DA-D46B-47D0-9D43-77120D9B55FC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniVerseDataConnector", "UniVerseDataConnector\UniVerseDataConnector.csproj", "{DC27C02B-2065-4189-BBE7-EBDA76D719C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +34,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8F32E552-C036-4CB4-8F1D-FD888D5926E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F32E552-C036-4CB4-8F1D-FD888D5926E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8F32E552-C036-4CB4-8F1D-FD888D5926E2}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{8F32E552-C036-4CB4-8F1D-FD888D5926E2}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{B4A594DA-D46B-47D0-9D43-77120D9B55FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B4A594DA-D46B-47D0-9D43-77120D9B55FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4A594DA-D46B-47D0-9D43-77120D9B55FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,6 +42,10 @@ Global
 		{DC27C02B-2065-4189-BBE7-EBDA76D719C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC27C02B-2065-4189-BBE7-EBDA76D719C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC27C02B-2065-4189-BBE7-EBDA76D719C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7CB6C57-D757-40E8-A5A5-B207D36AC870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7CB6C57-D757-40E8-A5A5-B207D36AC870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7CB6C57-D757-40E8-A5A5-B207D36AC870}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7CB6C57-D757-40E8-A5A5-B207D36AC870}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
